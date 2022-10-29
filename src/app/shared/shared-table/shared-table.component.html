@@ -1,0 +1,29 @@
+<p-table *ngIf="sharedTableOptions.data | async as data" [value]="data">
+  <ng-template pTemplate="header">
+    <tr>
+      <th *ngFor="let col of sharedTableOptions.columns">
+        {{ col.headerName }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-data>
+    <tr>
+      <td
+        [ngClass]="col.cellClass"
+        *ngFor="let col of sharedTableOptions.columns"
+      >
+        <ndc-dynamic
+          *ngIf="col.component; else field"
+          [ndcDynamicComponent]="col.component"
+          [ndcDynamicInputs]="{
+            row: data,
+            componentParent: sharedTableOptions.componentParent
+          }"
+        ></ndc-dynamic>
+        <ng-template #field>
+          <span *ngIf="col.field">{{ data[col.field] }}</span>
+        </ng-template>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
