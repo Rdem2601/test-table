@@ -2,26 +2,49 @@
   <ng-template pTemplate="header">
     <tr>
       <th *ngFor="let col of sharedTableOptions.columns">
-        {{ col.headerName }}
+        <span *ngIf="!col.selectRowCol; else headerCheckbox">{{
+          col.headerName
+        }}</span>
+        <ng-template #headerCheckbox>
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox
+        ></ng-template>
       </th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-data>
-    <tr>
+    <tr
+      [ngClass]="
+        sharedTableOptions.getRowClass
+          ? sharedTableOptions.getRowClass(data)
+          : null
+      "
+    >
       <td
         [ngClass]="col.cellClass"
         *ngFor="let col of sharedTableOptions.columns"
       >
-        <ndc-dynamic
-          *ngIf="col.component; else field"
-          [ndcDynamicComponent]="col.component"
-          [ndcDynamicInputs]="{
-            row: data,
-            componentParent: sharedTableOptions.componentParent
-          }"
-        ></ndc-dynamic>
-        <ng-template #field>
-          <span *ngIf="col.field">{{ data[col.field] }}</span>
+        <ng-container *ngIf="!col.selectRowCol; else checkbox">
+          <!-- show custom component -->
+          <ndc-dynamic
+            *ngIf="col.component; else field"
+            [ndcDynamicComponent]="col.component"
+            [ndcDynamicInputs]="{
+              row: data,
+              componentParent: sharedTableOptions.componentParent
+            }"
+          ></ndc-dynamic>
+
+          <!-- show field value -->
+          <ng-template #field>
+            <span *ngIf="col.field">{{
+              col.format ? col.format(data[col.field]) : data[col.field]
+            }}</span>
+          </ng-template>
+        </ng-container>
+
+        <!-- show checkbox -->
+        <ng-template #checkbox>
+          <p-tableCheckbox [value]="data"></p-tableCheckbox>
         </ng-template>
       </td>
     </tr>
