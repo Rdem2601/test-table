@@ -1,4 +1,9 @@
-<p-table *ngIf="sharedTableOptions.data | async as data" [value]="data">
+<p-table
+  #table
+  *ngIf="sharedTableOptions.data | async as data"
+  [globalFilterFields]="sharedTableOptions.globalFilterFields"
+  [value]="data"
+>
   <ng-template pTemplate="header">
     <tr>
       <th *ngFor="let col of sharedTableOptions.columns">

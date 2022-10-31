@@ -1,7 +1,22 @@
-<app-shared-table [sharedTableOptions]="tableOptions"></app-shared-table>
+<app-shared-table
+  (onTableReady)="table = $event"
+  [sharedTableOptions]="tableOptions"
+></app-shared-table>
 <div *ngIf="printedData" style="margin-top: 20px">
   <h3>Data</h3>
   <p>{{ printedData?.firstName }}</p>
   <p>{{ printedData?.lastName }}</p>
   <p>{{ printedData?.city }}</p>
+</div>
+<div style="margin-top: 20px">
+  <input type="text" (input)="search($event.target)" />
+</div>
+<div style="margin-top: 20px">
+  <button (click)="printSelected()">Print Selected</button>
+  <div *ngFor="let selectedRow of selectedRows">
+    <p>
+      {{ selectedRow?.firstName }} {{ selectedRow?.lastName }}
+      {{ selectedRow?.city }}
+    </p>
+  </div>
 </div>

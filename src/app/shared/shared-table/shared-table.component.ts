@@ -1,4 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { Table } from 'primeng/table';
 import { SharedTableOptions, TableColumn } from 'src/app/app.component';
 
 @Component({
@@ -6,10 +15,16 @@ import { SharedTableOptions, TableColumn } from 'src/app/app.component';
   templateUrl: './shared-table.component.html',
   styleUrls: ['./shared-table.component.scss'],
 })
-export class SharedTableComponent implements OnInit {
+export class SharedTableComponent implements OnInit, AfterViewInit {
   @Input() sharedTableOptions: SharedTableOptions;
+  @ViewChild('table') table: Table;
+  @Output() onTableReady: EventEmitter<Table> = new EventEmitter();
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    this.onTableReady.emit(this.table);
+  }
 }

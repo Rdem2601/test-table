@@ -1,5 +1,6 @@
 import { CurrencyPipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { Table } from 'primeng/table';
 import { Observable, of } from 'rxjs';
 import { TableActionsComponent } from './table-actions/table-actions.component';
 
@@ -8,6 +9,7 @@ export interface SharedTableOptions {
   columns: TableColumn[];
   componentParent: any;
   getRowClass?: (data: any) => string;
+  globalFilterFields: string[];
   // other options for primengtable...
 }
 export interface TableColumn {
@@ -29,14 +31,16 @@ export class AppComponent {
   title = 'test-table-app';
 
   constructor(private cp: CurrencyPipe) {}
-
+  public table: Table;
   public printedData: any;
+  public selectedRows: any[];
   public tableOptions: SharedTableOptions = {
     componentParent: this,
     getRowClass: (data) => {
       if (data?.age > 50) return 'text-underline';
       return '';
     },
+    globalFilterFields: ['firstName', 'lastName', 'city'],
     data: of([
       {
         firstName: 'Jean-Claude',
@@ -97,5 +101,13 @@ export class AppComponent {
 
   printData(data: any) {
     this.printedData = data;
+  }
+
+  search(target: any): void {
+    this.table.filterGlobal(target.value, 'contains');
+  }
+
+  printSelected(): void {
+    this.selectedRows = this.table.selection;
   }
 }
