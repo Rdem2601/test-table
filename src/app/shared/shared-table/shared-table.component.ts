@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -14,6 +15,7 @@ import { SharedTableOptions, TableColumn } from 'src/app/app.component';
   selector: 'app-shared-table',
   templateUrl: './shared-table.component.html',
   styleUrls: ['./shared-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableComponent implements OnInit, AfterViewInit {
   @Input() sharedTableOptions: SharedTableOptions;

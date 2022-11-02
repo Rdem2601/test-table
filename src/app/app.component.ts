@@ -110,4 +110,10 @@ export class AppComponent {
   printSelected(): void {
     this.selectedRows = this.table.selection;
   }
+
+  changeColumnPosition(): void {
+    const col = this.tableOptions.columns.splice(1, 1)[0];
+    this.tableOptions.columns.splice(2, 0, col);
+    this.tableOptions = { ...this.tableOptions };
+  }
 }

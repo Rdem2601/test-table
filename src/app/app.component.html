@@ -9,7 +9,7 @@
   <p>{{ printedData?.city }}</p>
 </div>
 <div style="margin-top: 20px">
-  <input type="text" (input)="search($event.target)" />
+  <input placeholder="search" type="text" (input)="search($event.target)" />
 </div>
 <div style="margin-top: 20px">
   <button (click)="printSelected()">Print Selected</button>
@@ -19,4 +19,7 @@
       {{ selectedRow?.city }}
     </p>
   </div>
+</div>
+<div style="margin-top: 20px">
+  <button (click)="changeColumnPosition()">change col position</button>
 </div>
