@@ -7,7 +7,6 @@ import { TableActionsComponent } from './table-actions/table-actions.component';
 export interface SharedTableOptions {
   data?: Observable<any[]>;
   columns: TableColumn[];
-  componentParent: any;
   getRowClass?: (data: any) => string;
   globalFilterFields: string[];
   // other options for primengtable...
@@ -19,6 +18,11 @@ export interface TableColumn {
   component?: any;
   selectRowCol?: boolean;
   format?: (data: any) => string | null;
+  actions?: {
+    text?: string;
+    class?: string;
+    action?: (param?: any) => {} | void;
+  }[];
   // other options for column (format, filter...)...
 }
 
@@ -35,7 +39,6 @@ export class AppComponent {
   public printedData: any;
   public selectedRows: any[];
   public tableOptions: SharedTableOptions = {
-    componentParent: this,
     getRowClass: (data) => {
       if (data?.age > 50) return 'text-underline';
       return '';
@@ -95,9 +98,33 @@ export class AppComponent {
       {
         headerName: 'Actions',
         component: TableActionsComponent,
+        actions: [
+          {
+            text: 'print1',
+            action: this.print1,
+          },
+          {
+            text: 'print2',
+            action: this.print2,
+          },
+          {
+            text: 'print3',
+            action: this.print3,
+          },
+        ],
       },
     ],
   };
+
+  print1() {
+    console.log(1);
+  }
+  print2() {
+    console.log(2);
+  }
+  print3() {
+    console.log(3);
+  }
 
   printData(data: any) {
     this.printedData = data;
@@ -115,5 +142,16 @@ export class AppComponent {
     const col = this.tableOptions.columns.splice(1, 1)[0];
     this.tableOptions.columns.splice(2, 0, col);
     this.tableOptions = { ...this.tableOptions };
+  }
+
+  setMinAge(target: any): void {
+    this.table.filter([target.value, 38], 'age', 'between');
+  }
+
+  setMaxAge(target: any): void {
+    console.log(Number(target.value) ?? null);
+    if (target.value)
+      this.table.filter(target.value === '' ? null : target.value, 'age', 'lt');
+    console.log(this.table.filters);
   }
 }

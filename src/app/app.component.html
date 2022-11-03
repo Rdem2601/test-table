@@ -23,3 +23,8 @@
 <div style="margin-top: 20px">
   <button (click)="changeColumnPosition()">change col position</button>
 </div>
+<div style="margin-top: 20px">
+  filter age entre:
+  <input (input)="setMinAge($event.target)" type="text" /> et
+  <input (input)="setMaxAge($event.target)" type="text" />
+</div>

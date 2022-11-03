@@ -8,13 +8,9 @@ import { AppComponent } from '../app.component';
 })
 export class TableActionsComponent implements OnInit {
   @Input() row: any;
-  @Input() componentParent: AppComponent;
+  @Input() actions: any[];
 
   constructor() {}
 
   ngOnInit(): void {}
-
-  printData(): void {
-    this.componentParent.printData(this.row);
-  }
 }
